@@ -7,38 +7,53 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ListView
 import android.widget.SeekBar
+import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
 import com.vaudibert.canidrive.KeyboardUtils
 import com.vaudibert.canidrive.R
+import com.vaudibert.canidrive.databinding.FragmentAddDrinkBinding
 import com.vaudibert.canidrive.ui.CanIDrive
 import com.vaudibert.canidrive.ui.adapter.PresetDrinksAdapter
-import kotlinx.android.synthetic.main.constraint_content_add_drink_delay_button.*
-import kotlinx.android.synthetic.main.constraint_content_add_drink_presets.*
-import java.util.*
+import java.util.Date
 
 /**
  * Fragment to add a drink.
  */
 class AddDrinkFragment : Fragment() {
 
+    private var _binding: FragmentAddDrinkBinding? = null
+    private val binding get() = _binding!!
+
     private var volume = 0.0
     private var degree = 0.0
     private var delay: Long = 0
 
+    // Views from included layouts
+    private lateinit var listViewPresetDrinks: ListView
+    private lateinit var textViewWhenText: TextView
+    private lateinit var seekBarIngestionDelay: VerticalSeekBar
+    private lateinit var buttonValidateNewDrink: com.google.android.material.floatingactionbutton.FloatingActionButton
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_drink, container, false)
+    ): View {
+        _binding = FragmentAddDrinkBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Initialize views from included layouts
+        listViewPresetDrinks = view.findViewById(R.id.listViewPresetDrinks)
+        textViewWhenText = view.findViewById(R.id.textViewWhenText)
+        seekBarIngestionDelay = view.findViewById(R.id.seekBarIngestionDelay)
+        buttonValidateNewDrink = view.findViewById(R.id.buttonValidateNewDrink)
 
         val drinkRepository = CanIDrive.instance.mainRepository.drinkRepository
         val presetService = drinkRepository.presetService
@@ -47,7 +62,7 @@ class AddDrinkFragment : Fragment() {
 
         val presetDrinksAdapter =
             PresetDrinksAdapter(
-                this.context!!,
+                requireContext(),
                 viewLifecycleOwner,
                 {
                     findNavController().navigate(
@@ -58,19 +73,16 @@ class AddDrinkFragment : Fragment() {
             )
         listViewPresetDrinks.adapter = presetDrinksAdapter
 
-        drinkRepository.liveSelectedPreset.observe(viewLifecycleOwner, Observer {
+        drinkRepository.liveSelectedPreset.observe(viewLifecycleOwner) {
             if (it == null)
                 buttonValidateNewDrink.visibility = Button.INVISIBLE
             else
                 buttonValidateNewDrink.visibility = Button.VISIBLE
-        })
+        }
 
-        drinkRepository.livePresetDrinks.observe(
-            viewLifecycleOwner,
-            Observer {
-                presetDrinksAdapter.notifyDataSetChanged()
-            }
-        )
+        drinkRepository.livePresetDrinks.observe(viewLifecycleOwner) {
+            presetDrinksAdapter.notifyDataSetChanged()
+        }
 
         buttonValidateNewDrink.setOnClickListener {
             val ingestionTime = Date(Date().time - (delay * 60000))
@@ -118,4 +130,8 @@ class AddDrinkFragment : Fragment() {
         delay = delays[0]
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

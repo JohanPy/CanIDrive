@@ -5,32 +5,44 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.NumberPicker
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.vaudibert.canidrive.KeyboardUtils
 import com.vaudibert.canidrive.R
+import com.vaudibert.canidrive.databinding.FragmentAddPresetBinding
 import com.vaudibert.canidrive.domain.drink.IngestedDrink
 import com.vaudibert.canidrive.ui.CanIDrive
-import kotlinx.android.synthetic.main.fragment_add_preset.*
-import kotlinx.android.synthetic.main.linear_content_add_drink_custom_pickers.*
 import java.text.DecimalFormat
 
 class EditPresetFragment : Fragment() {
+
+    private var _binding: FragmentAddPresetBinding? = null
+    private val binding get() = _binding!!
+
     private var volume = 0.0
     private var degree = 0.0
 
-    private val doubleFormat : DecimalFormat = DecimalFormat("0.#")
+    private val doubleFormat: DecimalFormat = DecimalFormat("0.#")
+
+    // Views from included layout (linear_content_add_drink_custom_pickers.xml)
+    private lateinit var numberPickerVolume: NumberPicker
+    private lateinit var numberPickerDegree: NumberPicker
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_preset, container, false)
+    ): View {
+        _binding = FragmentAddPresetBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Initialize views from included layouts
+        numberPickerVolume = view.findViewById(R.id.numberPickerVolume)
+        numberPickerDegree = view.findViewById(R.id.numberPickerDegree)
 
         val drinkRepository = CanIDrive.instance.mainRepository.drinkRepository
         val presetService = drinkRepository.presetService
@@ -39,21 +51,21 @@ class EditPresetFragment : Fragment() {
         if (selectedPreset != null) {
             volume = selectedPreset.volume
             degree = selectedPreset.degree
-            editTextNewPresetName.setText(selectedPreset.name)
+            binding.editTextNewPresetName.setText(selectedPreset.name)
         }
 
-        buttonValidateNewPreset.setOnClickListener {
-            if (editTextNewPresetName.text.toString().isBlank()) return@setOnClickListener
+        binding.buttonValidateNewPreset.setOnClickListener {
+            if (binding.editTextNewPresetName.text.toString().isBlank()) return@setOnClickListener
 
             if (selectedPreset != null) {
                 presetService.updateSelectedPreset(
-                    editTextNewPresetName.text.toString(),
+                    binding.editTextNewPresetName.text.toString(),
                     volume,
                     degree
                 )
             } else {
                 presetService.addNewPreset(
-                    editTextNewPresetName.text.toString(),
+                    binding.editTextNewPresetName.text.toString(),
                     volume,
                     degree
                 )
@@ -80,7 +92,7 @@ class EditPresetFragment : Fragment() {
         numberPickerDegree.minValue = 0
         numberPickerDegree.maxValue = degreeLabels.size - 1
         numberPickerDegree.displayedValues = degreeLabels
-        val indexOfDegree = IngestedDrink.degrees.indexOf(degree)
+        val indexOfDegree = IngestedDrink.degrees.toList().indexOf(degree)
         val startDegree = if (indexOfDegree < 0)
             degreeLabels.size / 2
         else
@@ -95,14 +107,14 @@ class EditPresetFragment : Fragment() {
     private fun setVolumePicker() {
         val volumeLabels = IngestedDrink.volumes.map { vol ->
             if (vol < 1000.0)
-                "${doubleFormat.format(vol )} mL"
+                "${doubleFormat.format(vol)} mL"
             else
                 "${doubleFormat.format(vol / 1000.0)} L"
         }.toTypedArray()
         numberPickerVolume.minValue = 0
         numberPickerVolume.maxValue = volumeLabels.size - 1
         numberPickerVolume.displayedValues = volumeLabels
-        val indexOfVolume = IngestedDrink.volumes.indexOf(volume)
+        val indexOfVolume = IngestedDrink.volumes.toList().indexOf(volume)
         val startVolume = if (indexOfVolume < 0)
             volumeLabels.size / 2
         else
@@ -112,5 +124,10 @@ class EditPresetFragment : Fragment() {
         numberPickerVolume.setOnValueChangedListener { _, _, newVal ->
             volume = IngestedDrink.volumes[newVal]
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

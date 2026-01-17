@@ -1,102 +1,95 @@
 plugins {
     id("com.android.application")
-    id("kotlin-android")
-    id("kotlin-android-extensions")
+    id("org.jetbrains.kotlin.android")
     id("androidx.navigation.safeargs.kotlin")
-    id("kotlin-kapt")
+    id("com.google.devtools.ksp")
 }
 
 android {
-    compileSdkVersion(30)
+    namespace = "com.vaudibert.canidrive"
+    compileSdk = 35
+
     defaultConfig {
         applicationId = "com.vaudibert.canidrive"
-        minSdkVersion(19)
-        targetSdkVersion(30)
-        versionCode = 22
-        versionName = "0.2.9"
+        minSdk = 21
+        targetSdk = 35
+        versionCode = 23
+        versionName = "0.3.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        kapt {
-            arguments {
-                arg("room.schemaLocation", "$projectDir/schemas")
-            }
+
+        ksp {
+            arg("room.schemaLocation", "$projectDir/schemas")
         }
     }
+
     buildTypes {
-        getByName("release") {
+        release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
-    compileOptions {
-        sourceCompatibility.isJava8
-        targetCompatibility.isJava8
+
+    buildFeatures {
+        viewBinding = true
+        buildConfig = true
     }
-    (kotlinOptions as org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions).apply {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
     }
 }
 
 dependencies {
-    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation("com.h6ah4i.android.widget.verticalseekbar:verticalseekbar:1.0.0")
 
     // Kotlin
-    implementation(kotlin("stdlib-jdk8", version = "1.3.61"))
-    implementation("androidx.core:core-ktx:1.3.2")
+    implementation("androidx.core:core-ktx:1.15.0")
 
     // Android
-    implementation("androidx.appcompat:appcompat:1.2.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.0.2")
-    implementation("com.google.android.material:material:1.2.1")
+    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.2.0")
+    implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
 
     // JUnit
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.5.1")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.5.1")
-    androidTestImplementation("androidx.test:runner:1.3.0")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.4")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.11.4")
+    androidTestImplementation("androidx.test:runner:1.6.2")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 
     // Kotlin needs for testing
     implementation(kotlin("reflect"))
     testImplementation(kotlin("test"))
-    testImplementation(kotlin("test-junit"))
 
     // Navigation (Kotlin)
-    val navigationVersion = "2.2.0"
+    val navigationVersion = "2.8.5"
     implementation("androidx.navigation:navigation-fragment-ktx:$navigationVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$navigationVersion")
 
-
     // ViewModel and LiveData
-    val lifecycleVersion = "2.2.0"
-    implementation("androidx.lifecycle:lifecycle-extensions:$lifecycleVersion")
+    val lifecycleVersion = "2.8.7"
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
 
-    kapt("androidx.lifecycle:lifecycle-compiler:$lifecycleVersion")
-
     // optional - ReactiveStreams support for LiveData
-    // For Kotlin use lifecycle-reactivestreams-ktx
     implementation("androidx.lifecycle:lifecycle-reactivestreams-ktx:$lifecycleVersion")
 
     // optional - Test helpers for LiveData
-    val coreTestingVersion = "2.1.0"
-    testImplementation("androidx.arch.core:core-testing:$coreTestingVersion")
-
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
 
     // Room
-    val roomVersion = "2.2.3"
+    val roomVersion = "2.6.1"
     implementation("androidx.room:room-runtime:$roomVersion")
-    kapt("androidx.room:room-compiler:$roomVersion")
-    // For Kotlin use kapt instead of annotationProcessor
-
-    // optional - Kotlin Extensions and Coroutines support for Room
+    ksp("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
-
 }
 
-tasks.withType < Test > {
-    // Use the native JUnit support of Gradle.
+tasks.withType<Test> {
     useJUnitPlatform()
 }

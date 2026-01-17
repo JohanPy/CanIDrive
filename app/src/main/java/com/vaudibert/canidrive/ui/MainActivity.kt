@@ -4,13 +4,14 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.appbar.AppBarLayout
 import com.vaudibert.canidrive.R
-import kotlinx.android.synthetic.main.activity_main.*
+import com.vaudibert.canidrive.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding
     val time = CanIDrive.instance.time
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,15 +20,18 @@ class MainActivity : AppCompatActivity() {
             else -> setTheme(R.style.AppTheme)
         }
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        findNavController(R.id.nav_host_fragment)
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navHostFragment.navController
             .addOnDestinationChangedListener { _, destination, _ ->
-                appBarDrinker.visibility = if (destination.id == R.id.splashFragment)
+                binding.appBarDrinker.visibility = if (destination.id == R.id.splashFragment)
                     AppBarLayout.GONE
                 else
                     AppBarLayout.VISIBLE
-                toolbar.title =  when (destination.id) {
+                binding.toolbar.title = when (destination.id) {
                     R.id.driveFragment -> getString(R.string.can_i_drive_question)
                     R.id.drinkerFragment -> getString(R.string.about_you)
                     R.id.addDrinkFragment -> getString(R.string.select_a_drink)
