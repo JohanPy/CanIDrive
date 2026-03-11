@@ -15,11 +15,15 @@ import com.vaudibert.canidrive.BuildConfig
 import com.vaudibert.canidrive.R
 import com.vaudibert.canidrive.databinding.FragmentSplashBinding
 import com.vaudibert.canidrive.ui.CanIDrive
+import com.vaudibert.canidrive.data.repository.MainRepository
+import org.koin.android.ext.android.inject
 
 /**
  * The splash fragment, to display icon, version and do stuff in background.
  */
 class SplashFragment : Fragment() {
+
+    private val mainRepository: MainRepository by inject()
 
     private var _binding: FragmentSplashBinding? = null
     private val binding get() = _binding!!
@@ -80,7 +84,7 @@ class SplashFragment : Fragment() {
 
     private fun navigateToNext() {
         if (!isAdded) return
-        val init = CanIDrive.instance.mainRepository.init
+        val init = mainRepository.init
 
         val action = if (init)
             SplashFragmentDirections.actionSplashFragmentToDriveFragment()

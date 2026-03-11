@@ -1,4 +1,4 @@
-package com.vaudibert.canidrive.ui.repository
+package com.vaudibert.canidrive.data.repository
 
 import android.content.Context
 import android.util.Log

@@ -10,7 +10,7 @@ data class DriveLaw(
     fun isCustom() = countryCode.isEmpty()
 }
 
-data class YoungLimit(val limit:Double = 0.0, val explanationId: Int)
+data class YoungLimit(val limit:Double = 0.0, val explanationName: String = "")
 
 data class ProfessionalLimit(val limit:Double = 0.0)
 

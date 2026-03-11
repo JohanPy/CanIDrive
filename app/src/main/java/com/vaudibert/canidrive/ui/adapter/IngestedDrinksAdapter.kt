@@ -15,8 +15,11 @@ import java.text.DateFormat
 import java.text.DecimalFormat
 import java.util.*
 
+import com.vaudibert.canidrive.domain.drink.IngestionService
+
 class IngestedDrinksAdapter(
-    val context: Context
+    val context: Context,
+    private val ingestionService: IngestionService
     ) : BaseAdapter() {
 
     private var ingestedDrinkList : List<IngestedDrinkEntity> = emptyList()
@@ -27,9 +30,6 @@ class IngestedDrinksAdapter(
 
     private val doubleFormat : DecimalFormat = DecimalFormat("0.#")
 
-    // TODO : inject service ?
-    private val ingestionService =
-        CanIDrive.instance.mainRepository.drinkRepository.ingestionService
 
     private val inflater: LayoutInflater =
         context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater

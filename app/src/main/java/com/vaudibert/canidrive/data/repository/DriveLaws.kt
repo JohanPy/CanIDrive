@@ -1,4 +1,4 @@
-package com.vaudibert.canidrive.ui.repository
+package com.vaudibert.canidrive.data.repository
 
 import com.vaudibert.canidrive.R
 import com.vaudibert.canidrive.domain.drivelaw.DriveLaw
@@ -24,7 +24,7 @@ object DriveLaws {
             "AT", 0.5,
             YoungLimit(
                 0.1,
-                R.string.less_two_years_driving
+                "less_two_years_driving"
             ),
             professionalLimit = ProfessionalLimit(
                 0.2
@@ -46,7 +46,7 @@ object DriveLaws {
     // Bosnia & Herzegovina
         DriveLaw(
             "BA", 0.3,
-            YoungLimit(explanationId = R.string.twenty_one_young_or_less_three_years_driving),
+            YoungLimit(explanationName = "twenty_one_young_or_less_three_years_driving"),
             ProfessionalLimit()
         ),
 
@@ -56,7 +56,7 @@ object DriveLaws {
     // Croatia
         DriveLaw(
             "HR", 0.5,
-            YoungLimit(explanationId = R.string.sixteen_to_twenty_four_years_old),
+            YoungLimit(explanationName = "sixteen_to_twenty_four_years_old"),
             ProfessionalLimit()
         ),
 
@@ -80,7 +80,7 @@ object DriveLaws {
             "FR", 0.5,
             YoungLimit(
                 0.2,
-                R.string.less_two_years_driving
+                "less_two_years_driving"
             ),
             ProfessionalLimit(0.2)
         ),
@@ -91,7 +91,7 @@ object DriveLaws {
     // Germany
         DriveLaw(
             "DE", 0.5,
-            YoungLimit(explanationId = R.string.twenty_one_young_or_less_two_years_driving),
+            YoungLimit(explanationName = "twenty_one_young_or_less_two_years_driving"),
             ProfessionalLimit(0.2)
         ),
 
@@ -103,7 +103,7 @@ object DriveLaws {
             "GR", 0.5,
             YoungLimit(
                 0.2,
-                R.string.motor_cycle_or_less_two_years_driving
+                "motor_cycle_or_less_two_years_driving"
             ),
             ProfessionalLimit(0.2)
         ),
@@ -120,7 +120,7 @@ object DriveLaws {
             "IE", 0.5,
             YoungLimit(
                 0.2,
-                R.string.motor_cycle_or_less_two_years_driving
+                "motor_cycle_or_less_two_years_driving"
             ),
             ProfessionalLimit(0.2)
         ),
@@ -130,7 +130,7 @@ object DriveLaws {
             "IT", 0.5,
             YoungLimit(
                 0.01,
-                R.string.three_years_driving
+                "three_years_driving"
             ),
             ProfessionalLimit(0.01)
         ),
@@ -140,14 +140,14 @@ object DriveLaws {
             "LV", 0.5,
             YoungLimit(
                 0.2,
-                R.string.less_two_years_driving
+                "less_two_years_driving"
             )
         ),
 
     // Lithuania
         DriveLaw(
             "LT", 0.4,
-            YoungLimit(explanationId = R.string.motor_cycle_or_less_two_years_driving),
+            YoungLimit(explanationName = "motor_cycle_or_less_two_years_driving"),
             ProfessionalLimit()
         ),
 
@@ -156,7 +156,7 @@ object DriveLaws {
             "LU", 0.5,
             YoungLimit(
                 0.2,
-                R.string.less_two_years_driving
+                "less_two_years_driving"
             ),
             ProfessionalLimit(0.2)
         ),
@@ -176,7 +176,7 @@ object DriveLaws {
             "NL", 0.5,
             YoungLimit(
                 0.2,
-                R.string.five_years_driving
+                "five_years_driving"
             )
         ),
 
@@ -193,7 +193,7 @@ object DriveLaws {
             "PT", 0.5,
             YoungLimit(
                 0.2,
-                R.string.three_years_driving
+                "three_years_driving"
             )
         ),
 
@@ -206,7 +206,7 @@ object DriveLaws {
     // Serbia
         DriveLaw(
             "RS", 0.2,
-            YoungLimit(explanationId = R.string.motor_cycle_or_young_drivers),
+            YoungLimit(explanationName = "motor_cycle_or_young_drivers"),
             ProfessionalLimit()
         ),
 
@@ -216,7 +216,7 @@ object DriveLaws {
     // Slovenia
         DriveLaw(
             "SI", 0.5,
-            YoungLimit(explanationId = R.string.three_years_driving),
+            YoungLimit(explanationName = "three_years_driving"),
             ProfessionalLimit()
         ),
 
@@ -225,7 +225,7 @@ object DriveLaws {
             "ES", 0.5,
             YoungLimit(
                 0.3,
-                R.string.less_two_years_driving
+                "less_two_years_driving"
             ),
             ProfessionalLimit(0.2)
         ),
@@ -236,7 +236,7 @@ object DriveLaws {
     // Switzland
         DriveLaw(
             "CH", 0.5,
-            YoungLimit(explanationId = R.string.three_years_driving)
+            YoungLimit(explanationName = "three_years_driving")
         ),
 
     // Ukraine
@@ -253,17 +253,17 @@ object DriveLaws {
 
     // -------------------- Americas --------------------
     // Canada
-        DriveLaw("CA", 0.08),
+        DriveLaw("CA", 0.8),
 
     // USA
         DriveLaw(
             "US", 0.8,
-            YoungLimit(explanationId = R.string.twenty_one_young)
+            YoungLimit(explanationName = "twenty_one_young")
         ),
 
     // -------------------- Asia --------------------
     // China
-        DriveLaw("CN"),
+        DriveLaw("CN", 0.2),
 
     // Hong-Kong
         DriveLaw("HK", 0.5),
@@ -303,7 +303,7 @@ object DriveLaws {
             "PH", 0.5,
             YoungLimit(
                 0.1,
-                R.string.motor_cycle_or_young_drivers
+                "motor_cycle_or_young_drivers"
             ),
             ProfessionalLimit(0.1)
         ),
@@ -333,7 +333,7 @@ object DriveLaws {
             "IL", 0.24,
             YoungLimit(
                 0.05,
-                R.string.new_driver_or_twenty_four
+                "new_driver_or_twenty_four"
             ),
             ProfessionalLimit(0.05)
         ),

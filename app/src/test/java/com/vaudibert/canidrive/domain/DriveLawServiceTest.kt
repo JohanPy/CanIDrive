@@ -19,7 +19,7 @@ internal class DriveLawServiceTest {
         DriveLaw("")
     private val aDriveLaw = DriveLaw(
         "A-first", 0.7,
-        YoungLimit(0.15, 654321),
+        YoungLimit(0.15, "testExplanation"),
         ProfessionalLimit(0.23)
     )
     private val zDriveLaw =

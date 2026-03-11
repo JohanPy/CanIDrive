@@ -25,15 +25,20 @@ import com.vaudibert.canidrive.databinding.FragmentDrinkerBinding
 import com.vaudibert.canidrive.domain.drivelaw.DriveLaw
 import com.vaudibert.canidrive.domain.drivelaw.DriveLawService
 import com.vaudibert.canidrive.ui.CanIDrive
-import com.vaudibert.canidrive.ui.repository.DigestionRepository
-import com.vaudibert.canidrive.ui.repository.MainRepository
+import com.vaudibert.canidrive.data.repository.DigestionRepository
+import com.vaudibert.canidrive.data.repository.MainRepository
+import com.vaudibert.canidrive.domain.digestion.Sex
 import kotlin.math.roundToInt
+
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * The drinker fragment to enter its details.
  */
 // TODO : split into 2 fragments : body and drive law ?
 class DrinkerFragment : Fragment() {
+
+    private val viewModel: DrinkerViewModel by viewModel()
 
     private var _binding: FragmentDrinkerBinding? = null
     private val binding get() = _binding!!
@@ -85,11 +90,11 @@ class DrinkerFragment : Fragment() {
         checkboxYoungDriver = view.findViewById(R.id.checkboxYoungDriver)
         checkboxProfessionalDriver = view.findViewById(R.id.checkboxProfessionalDriver)
 
-        mainRepository = CanIDrive.instance.mainRepository
-        digestionRepository = mainRepository.digestionRepository
+        mainRepository = viewModel.mainRepository
+        digestionRepository = viewModel.digestionRepository
 
-        val driveLawRepository = mainRepository.driveLawRepository
-        driveLawService = driveLawRepository.driveLawService
+        val driveLawRepository = viewModel.driveLawRepository
+        driveLawService = viewModel.driveLawService
 
         setupSpinnerCountry(
             driveLawService
@@ -119,7 +124,12 @@ class DrinkerFragment : Fragment() {
             // Update for Young driver checkbox visibility (not value)
             if (driveLaw.youngLimit != null) {
                 checkboxYoungDriver.visibility = CheckBox.VISIBLE
-                checkboxYoungDriver.text = getString(driveLaw.youngLimit.explanationId)
+                val resId = resources.getIdentifier(driveLaw.youngLimit.explanationName, "string", requireActivity().packageName)
+                if (resId != 0) {
+                    checkboxYoungDriver.text = getString(resId)
+                } else {
+                    checkboxYoungDriver.text = driveLaw.youngLimit.explanationName
+                }
             } else {
                 checkboxYoungDriver.visibility = CheckBox.GONE
             }

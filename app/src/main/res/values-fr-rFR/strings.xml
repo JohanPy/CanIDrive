@@ -10,6 +10,13 @@
     <string name="female">FEMME</string>
     <string name="other">AUTRE</string>
     <string name="about_you">À propos de vous</string>
+
+    <string name="preferences_display_category">Apparence</string>
+    <string name="theme_preference_title">Thème</string>
+    <string name="theme_preference_dialog_title">Choisir le thème</string>
+    <string name="theme_light">Clair</string>
+    <string name="theme_dark">Sombre</string>
+    <string name="theme_system">Selon le système</string>
     <string name="select_a_drink">Choisir une boisson</string>
     <string name="now">maintenant</string>
     <string name="can_i_drive_question">Puis-je conduire ?</string>

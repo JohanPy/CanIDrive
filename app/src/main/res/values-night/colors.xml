@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark Mode Colors -->
+    <color name="colorAmberPrimary">#E58A7A</color>
+    <color name="colorAmberTransparent">#A6E58A7A</color>
+    <color name="colorAmberAccent">#E58A7A</color>
+
+    <color name="colorGreenPrimary">#57E45E</color>
+    <color name="colorGreenTransparent">#A657E45E</color>
+    <color name="colorGreenAccent">#A9D68B</color>
+
+    <color name="colorPrimaryDark">#121212</color>
+    <color name="WHITE">#E0E0E0</color>
+    <!-- Let the other standard colors (green, red, amber) unchanged or tweak if needed -->
+    <color name="driveGreen">#30CA36</color>
+    <color name="driveRed">#FF5252</color>
+    <color name="driveAmber">#FFB74D</color>
+</resources>

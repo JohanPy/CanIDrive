@@ -15,7 +15,11 @@ import com.vaudibert.canidrive.domain.drink.IngestedDrink
 import com.vaudibert.canidrive.ui.CanIDrive
 import java.text.DecimalFormat
 
+import org.koin.androidx.viewmodel.ext.android.viewModel
+
 class EditPresetFragment : Fragment() {
+
+    private val viewModel: EditPresetViewModel by viewModel()
 
     private var _binding: FragmentAddPresetBinding? = null
     private val binding get() = _binding!!
@@ -44,8 +48,7 @@ class EditPresetFragment : Fragment() {
         numberPickerVolume = view.findViewById(R.id.numberPickerVolume)
         numberPickerDegree = view.findViewById(R.id.numberPickerDegree)
 
-        val drinkRepository = CanIDrive.instance.mainRepository.drinkRepository
-        val presetService = drinkRepository.presetService
+        val presetService = viewModel.drinkRepository.presetService
         val selectedPreset = presetService.selectedPreset
 
         if (selectedPreset != null) {

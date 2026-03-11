@@ -12,7 +12,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.vaudibert.canidrive.R
 import com.vaudibert.canidrive.data.PresetDrinkEntity
-import com.vaudibert.canidrive.ui.repository.DrinkRepository
+import com.vaudibert.canidrive.data.repository.DrinkRepository
 import java.text.DecimalFormat
 
 class PresetDrinksAdapter(

@@ -89,8 +89,15 @@ dependencies {
     ksp("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
 
+    // Preferences
+    implementation("androidx.preference:preference-ktx:1.2.1")
+
     // Security – encrypted SharedPreferences
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
+
+    // Koin for Dependency Injection
+    val koinVersion = "3.5.3"
+    implementation("io.insert-koin:koin-android:$koinVersion")
 }
 
 tasks.withType<Test> {

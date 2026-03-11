@@ -2,21 +2,23 @@ package com.vaudibert.canidrive.ui
 
 import android.app.Application
 import com.vaudibert.canidrive.domain.ITimeService
-import com.vaudibert.canidrive.ui.repository.MainRepository
+import com.vaudibert.canidrive.data.repository.MainRepository
+import com.vaudibert.canidrive.di.appModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
 
 class CanIDrive : Application() {
 
-    companion object {
-        lateinit var instance: CanIDrive
-    }
-
     val time : ITimeService = TimeServiceAndroid()
-
-    lateinit var mainRepository : MainRepository
 
     override fun onCreate() {
         super.onCreate()
-        mainRepository = MainRepository(this)
-        instance = this
+        
+        startKoin {
+            androidLogger()
+            androidContext(this@CanIDrive)
+            modules(appModule)
+        }
     }
 }

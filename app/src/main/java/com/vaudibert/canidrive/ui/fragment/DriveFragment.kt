@@ -18,9 +18,11 @@ import com.vaudibert.canidrive.databinding.FragmentDriveStatusBinding
 import com.vaudibert.canidrive.domain.DrinkerStatusService
 import com.vaudibert.canidrive.ui.CanIDrive
 import com.vaudibert.canidrive.ui.adapter.IngestedDrinksAdapter
-import com.vaudibert.canidrive.ui.repository.DigestionRepository
-import com.vaudibert.canidrive.ui.repository.DrinkRepository
+import com.vaudibert.canidrive.data.repository.DigestionRepository
+import com.vaudibert.canidrive.data.repository.DrinkRepository
 import java.text.DateFormat
+
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * The drive fragment that displays the drive status :
@@ -29,6 +31,8 @@ import java.text.DateFormat
  *  - what were the past drinks ?
  */
 class DriveFragment : Fragment() {
+
+    private val viewModel: DriveViewModel by viewModel()
 
     private var _binding: FragmentDriveStatusBinding? = null
     private val binding get() = _binding!!
@@ -60,12 +64,11 @@ class DriveFragment : Fragment() {
         textViewPastDrinks = view.findViewById(R.id.textViewPastDrinks)
         listViewPastDrinks = view.findViewById(R.id.listViewPastDrinks)
 
-        val mainRepository = CanIDrive.instance.mainRepository
-        drinkerStatusService = mainRepository.drinkerStatusService
-        drinkRepository = mainRepository.drinkRepository
-        digestionRepository = mainRepository.digestionRepository
+        drinkerStatusService = viewModel.mainRepository.drinkerStatusService
+        drinkRepository = viewModel.drinkRepository
+        digestionRepository = viewModel.digestionRepository
 
-        ingestedDrinksAdapter = IngestedDrinksAdapter(requireContext())
+        ingestedDrinksAdapter = IngestedDrinksAdapter(requireContext(), drinkRepository.ingestionService)
         listViewPastDrinks.adapter = ingestedDrinksAdapter
 
         drinkRepository.livePastDrinks.observe(viewLifecycleOwner) {

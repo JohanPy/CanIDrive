@@ -20,10 +20,14 @@ import com.vaudibert.canidrive.ui.CanIDrive
 import com.vaudibert.canidrive.ui.adapter.PresetDrinksAdapter
 import java.util.Date
 
+import org.koin.androidx.viewmodel.ext.android.viewModel
+
 /**
  * Fragment to add a drink.
  */
 class AddDrinkFragment : Fragment() {
+
+    private val viewModel: AddDrinkViewModel by viewModel()
 
     private var _binding: FragmentAddDrinkBinding? = null
     private val binding get() = _binding!!
@@ -53,7 +57,7 @@ class AddDrinkFragment : Fragment() {
         seekBarIngestionDelay = view.findViewById(R.id.seekBarIngestionDelay)
         buttonValidateNewDrink = view.findViewById(R.id.buttonValidateNewDrink)
 
-        val drinkRepository = CanIDrive.instance.mainRepository.drinkRepository
+        val drinkRepository = viewModel.drinkRepository
         val presetService = drinkRepository.presetService
 
         setDelaySeekBar()

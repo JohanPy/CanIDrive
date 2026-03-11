@@ -6,15 +6,26 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.appbar.AppBarLayout
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.navigation.findNavController
+import androidx.preference.PreferenceManager
 import com.vaudibert.canidrive.R
 import com.vaudibert.canidrive.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    val time = CanIDrive.instance.time
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val time = (application as CanIDrive).time
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val themeMode = when (sharedPreferences.getString("theme_preference", "system")) {
+            "light" -> AppCompatDelegate.MODE_NIGHT_NO
+            "dark" -> AppCompatDelegate.MODE_NIGHT_YES
+            else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        }
+        AppCompatDelegate.setDefaultNightMode(themeMode)
+
         when {
             time.isSaintPatrick() -> setTheme(R.style.AppThemeSaintPatrick)
             else -> setTheme(R.style.AppTheme)
@@ -36,6 +47,7 @@ class MainActivity : AppCompatActivity() {
                     R.id.drinkerFragment -> getString(R.string.about_you)
                     R.id.addDrinkFragment -> getString(R.string.select_a_drink)
                     R.id.addPresetFragment -> getString(R.string.add_preset_description)
+                    R.id.settingsFragment -> getString(R.string.action_settings)
                     else -> ""
                 }
             }
@@ -53,7 +65,10 @@ class MainActivity : AppCompatActivity() {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_settings -> {
+                findNavController(R.id.nav_host_fragment).navigate(R.id.settingsFragment)
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }

@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/colorAmberPrimary</item>
@@ -9,7 +9,7 @@
         <item name="colorAccent">@color/colorAmberAccent</item>
     </style>
 
-    <style name="AppThemeSaintPatrick" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppThemeSaintPatrick" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/colorGreenPrimary</item>
